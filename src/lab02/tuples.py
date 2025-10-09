@@ -1,11 +1,13 @@
 def format_record(rec: tuple[str, str, float]) -> str:
-    if len(rec) != 3 or not(isinstance(rec, tuple)):
-        return 'ValueError'
+    if not(isinstance(rec, tuple)):
+        raise TypeError
+    if len(rec) != 3:
+        raise ValueError
     fio, group, gpa = rec
     if len(fio) == 0 or len(group) == 0:
-        return 'ValueError'#неверная длина
+        raise ValueError
     if not isinstance(gpa, (int, float)) or not (0<gpa<=5):
-        return 'ValueErrror'#неверно введен тип данных
+        raise ValueError
     new_rec = ''
     fio = fio.strip().split()
     if len(fio) == 2:
