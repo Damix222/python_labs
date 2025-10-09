@@ -92,4 +92,120 @@ print(s_new)
 
 
 
+# Лабораторнгая работа 2
+
+## Задание 1
+```python
+print('Вывод на задание min_max:')
+def min_max(nums: list[float | int]) -> tuple[float | int, float | int]:
+    if not nums:
+        return  'ValueError'
+    return (min(nums), max(nums))
+print(min_max([3, -1, 5, 5, 0]))
+print(min_max([42]))
+print(min_max([-5, -2, -9]))
+print(min_max([]))
+print(min_max([1.5, 2, 2.0, -3.1]))
+
+print('Вывод на задание unique_sorted:')
+def unique_sorted(nums: list[float | int]) -> list[float | int]:
+    return sorted(set(nums))
+print(unique_sorted([3, 1, 2, 1, 3]))
+print(unique_sorted([]))
+print(unique_sorted([-1, -1, 0, 2, 2]))
+print(unique_sorted([1.0, 1, 2.5, 2.5, 0]))
+
+print('Вывод на задание flatten:')
+def flatten(mat: list[list | tuple]) -> list:
+    new_list = []
+    for list in mat:
+        for element in list:
+            if str(element).isdigit():
+                new_list.append(element)
+            else:
+                return 'ValueError'
+    return new_list
+print(flatten([[1, 2], [3, 4]]))
+print(flatten([[1, 2], (3, 4, 5)]))
+print(flatten([[1], [], [2, 3]]))
+print(flatten([[1, 2], "ab"]))
+```
+![01_arrays](/images/lab01/arrays.png)
+
+## Задание 2
+```python
+print('Вывод на задание transpose:')
+def transpose(mat: list[list[float | int]]) -> list[list]:
+    if len(mat) == 0:
+        return []
+    row_1len = len(mat[0])
+    for row in mat:
+        if len(row) != row_1len:
+            return 'ValueError'
+    return [list(pillar) for pillar in zip(*mat)]
+print(transpose([[1, 2, 3]]))
+print(transpose([[1], [2], [3]]))
+print(transpose([[1, 2], [3, 4]]))
+print(transpose([]))
+print(transpose([[1, 2], [3]]))
+        
+print('Вывод на задание row_sums:')
+def row_sums(mat: list[list[float | int]]) -> list[float]:
+    list_length = (len(row) for row in mat)
+    if len(set(list_length)) != 1:
+        return 'ValueError'
+    result = 0
+    return list(map(int, (sum(x) for x in mat)))
+print(row_sums([[1, 2, 3], [4, 5, 6]]))
+print(row_sums([[-1, 1], [10, -10]]))
+print(row_sums([[0, 0], [0, 0]]))
+print(row_sums([[1, 2], [3]]))
+
+print('Вывод на задание col_sums:')
+def col_sums(mat: list[list[float | int]]) -> list[float]:
+    list_length = (len(row) for row in mat)
+    if len(set(list_length)) != 1:
+        return 'ValueError'
+    summa_mat = []
+    for j in range(len(mat[0])):
+        summa = 0
+        for i in range(len(mat)):
+            summa += mat[i][j]
+        summa_mat.append(summa)
+    return(summa_mat)
+print(col_sums([[1, 2, 3], [4, 5, 6]]))
+print(col_sums([[-1, 1], [10, -10]]))
+print(col_sums([[0, 0], [0, 0]]))
+print(col_sums([[1, 2], [3]]))
+```
+![02_matrix](/images/lab01/matrix.png)
+
+## Задание 3
+```python
+def format_record(rec: tuple[str, str, float]) -> str:
+    if len(rec) != 3 or not(isinstance(rec, tuple)):
+        return 'TypeError'
+    fio, group, gpa = rec
+    if len(fio) == 0 or len(group) == 0:
+        return 'TypeError'#неверная длина
+    if not isinstance(gpa, (int, float)) or not (0<gpa<=5):
+        return 'ValueErrror'#неверно введен тип данных
+    new_rec = ''
+    fio = fio.strip().split()
+    if len(fio) == 2:
+        fio = str(fio[0][0].upper() + fio[0][1:] + fio[1][0].upper() + '., ')
+        new_rec += fio
+    if len(fio) == 3:
+        fio = str(fio[0][0].upper() + fio[0][1:] + ' ' + fio[1][0].upper() + '.' + fio[2][0].upper() + '., ')
+        new_rec += fio
+    gpa = f'{gpa:.2f}'
+    new_rec += 'гр. ' + str(group) + ', ' + 'GPA ' +  str(gpa)
+    return new_rec
+print(format_record(("Иванов Иван иванович", "BIVT-25", 4.6)))
+print(format_record(("Петров Пётр", "IKBO-12", 5.0)))
+print(format_record(("Петров Пётр Петрович", "IKBO-12", 5.0)))
+print(format_record(("  сидорова  анна   сергеевна ", "ABB-01", 3.999)))
+print(format_record(("  сидорова  анна   сергеевна ", "ABB-01")))
+```
+![03_tuples](/images/lab01/tuples.png)
 
