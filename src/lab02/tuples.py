@@ -6,7 +6,9 @@ def format_record(rec: tuple[str, str, float]) -> str:
     fio, group, gpa = rec
     if len(fio) == 0 or len(group) == 0:
         raise ValueError
-    if not isinstance(gpa, (int, float)) or not (0<gpa<=5):
+    if not isinstance(gpa, (int, float)):
+        raise TypeError
+    if not (0<gpa<=5):
         raise ValueError
     new_rec = ''
     fio = fio.strip().split()

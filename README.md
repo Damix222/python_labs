@@ -190,7 +190,9 @@ def format_record(rec: tuple[str, str, float]) -> str:
     fio, group, gpa = rec
     if len(fio) == 0 or len(group) == 0:
         raise ValueError
-    if not isinstance(gpa, (int, float)) or not (0<gpa<=5):
+    if not isinstance(gpa, (int, float)):
+        raise TypeError
+    if not (0<gpa<=5):
         raise ValueError
     new_rec = ''
     fio = fio.strip().split()
@@ -208,6 +210,7 @@ print(format_record(("Петров Пётр", "IKBO-12", 5.0)))
 print(format_record(("Петров Пётр Петрович", "IKBO-12", 5.0)))
 print(format_record(("  сидорова  анна   сергеевна ", "ABB-01", 3.999)))
 print(format_record(("  сидорова  анна   сергеевна ", "ABB-01")))
+
 ```
 ![03_tuples](/images/lab02/tuples.png)
 
