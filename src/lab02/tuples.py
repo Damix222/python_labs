@@ -1,9 +1,9 @@
 def format_record(rec: tuple[str, str, float]) -> str:
     if len(rec) != 3 or not(isinstance(rec, tuple)):
-        return 'TypeError'
+        return 'ValueError'
     fio, group, gpa = rec
     if len(fio) == 0 or len(group) == 0:
-        return 'TypeError'#неверная длина
+        return 'ValueError'#неверная длина
     if not isinstance(gpa, (int, float)) or not (0<gpa<=5):
         return 'ValueErrror'#неверно введен тип данных
     new_rec = ''
