@@ -130,7 +130,7 @@ print(flatten([[1, 2], (3, 4, 5)]))
 print(flatten([[1], [], [2, 3]]))
 print(flatten([[1, 2], "ab"]))
 ```
-![01_arrays](/images/lab01/arrays.png)
+![01_arrays](/images/lab02/arrays.png)
 
 ## Задание 2
 ```python
@@ -178,7 +178,7 @@ print(col_sums([[-1, 1], [10, -10]]))
 print(col_sums([[0, 0], [0, 0]]))
 print(col_sums([[1, 2], [3]]))
 ```
-![02_matrix](/images/lab01/matrix.png)
+![02_matrix](/images/lab02/matrix.png)
 
 ## Задание 3
 ```python
@@ -207,5 +207,5 @@ print(format_record(("Петров Пётр Петрович", "IKBO-12", 5.0)))
 print(format_record(("  сидорова  анна   сергеевна ", "ABB-01", 3.999)))
 print(format_record(("  сидорова  анна   сергеевна ", "ABB-01")))
 ```
-![03_tuples](/images/lab01/tuples.png)
+![03_tuples](/images/lab02/tuples.png)
 
