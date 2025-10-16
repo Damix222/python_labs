@@ -214,3 +214,85 @@ print(format_record(("  сидорова  анна   сергеевна ", "ABB-
 ```
 ![03_tuples](/images/lab02/tuples.png)
 
+
+
+
+# Лабораторнгая работа 3
+
+## Задание 1
+```python
+def normalize(text: str, *, casefold: bool = True, yo2e: bool = True) -> str:
+    if casefold:
+        text = text.casefold()
+    if yo2e:
+        text = text.replace('ё', 'е').replace('Ё', 'Е')
+    text = text.replace('\t', ' ').replace('\r', ' ').replace('\n', ' ')
+    text = ' '.join(text.split())
+    text = text.strip()
+    return text
+
+from re import *
+def tokenize(text: str) -> list[str]:
+    pattern = r'\b\w+(?:-\w+)*\b'
+    return findall(pattern, text)
+
+def count_freq(tokens: list[str]) -> dict[str, int]:
+    freq = {}
+    for element in tokens:
+        if element in freq:
+            freq[element] += 1
+        else:
+            freq[element] = 1
+    return dict(sorted(freq.items()))
+
+def top_n(freq: dict[str, int], n: int = 5) -> list[tuple[str, int]]:
+    if not freq:
+        return []
+    items = list(freq.items())
+    items.sort(key=lambda x: x[0])           
+    items.sort(key=lambda x: x[1], reverse=True)  
+    return items[:n]
+
+if __name__ == '__main__':
+    print('Вывод на задание normalize:')
+    print(normalize("ПрИвЕт\nМИр\t"))
+    print(normalize("ёжик, Ёлка"))
+    print(normalize("Hello\r\nWorld"))
+    print(normalize("  двойные   пробелы  "))
+
+    print(("Вывод на задание tokenize:"))
+    print(tokenize("привет мир"))
+    print(tokenize("hello,world!!!"))
+    print(tokenize("по-настоящему круто"))
+    print(tokenize("2025 год"))
+    print(tokenize("emoji 😀 не слово"))
+
+    print('Вывод на задание count_freq + top_n:')
+    print(count_freq(["a","b","a","c","b","a"]))
+    print(count_freq(["bb","aa","bb","aa","cc"]))
+    print(top_n(count_freq(["a","b","a","c","b","a"])))
+    print(top_n(count_freq(["bb","aa","bb","aa","cc"])))
+```
+![01](/images/lab03/01.png)
+
+## Задание 2
+```python
+import sys
+from lib.text import normalize, tokenize, count_freq, top_n
+
+def task():
+    text = sys.stdin.readline() 
+    tokens = tokenize(normalize(text))
+    freq = count_freq(tokens)
+    top_words = top_n(freq, 5)
+    print(f'Всего слов: {len(tokens)}')
+    print(f'Уникальных слов: {len(set(tokens))}')
+    print('Топ-5:')
+    for word, count in top_words:
+        print(f'{word}:{count}')
+
+if __name__ == '__main__':
+    task()
+    
+```
+![02](/images/lab03/02.png)
