@@ -358,12 +358,7 @@ def main(input_path: str = 'data/input.txt', output_path: str = 'data/report.csv
     except UnicodeDecodeError:
         print('неправильная кодировка')
         sys.exit(1)
-    '''
-    sys.exit(1) интерпретатор сразу завершает работу 
-    Значение аргумента (1):
-    Код возврата 1 означает, что программа завершилась с ошибкой.
-    Код возврата 0 означет успешное завершение программы.
-    '''
+
     freq = count_freq(tokenize(normalize(text)))
     sorted_freq= top_n(freq)
     rows = sorted_freq
@@ -372,9 +367,6 @@ def main(input_path: str = 'data/input.txt', output_path: str = 'data/report.csv
         write_csv(rows, output_path, header=header)
     else:
         write_csv([], output_path, header=header)
-    '''
-    Если пустой вход, то будет выведен только заголовок
-    '''
 
     total_words = sum(freq.values())
     unique_words = len(freq)
