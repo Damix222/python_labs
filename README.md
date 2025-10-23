@@ -390,6 +390,6 @@ if __name__ == "__main__":
 ![02](/images/lab04/02_1.png)
 ![03](/images/lab04/02_2.png)
 ### Пустой файл:
-![04](/images/lab04/02_3.png)
+![04](/images/lab04/02_03.png)
 ### Кодировка cp1251:
 ![05](/images/lab04/02_04.png)
