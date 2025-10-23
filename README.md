@@ -302,3 +302,89 @@ if __name__ == "__main__":
     main()
 ```
 ![02](/images/lab03/02.png)
+
+
+
+
+# Лабораторнгая работа 3
+
+## Задание 1
+```python
+from pathlib import Path
+
+def read_text(path: str | Path, encoding: str = "utf-8") -> str:
+    '''
+    encoding: кодировка файла ('utf-8' стоит по умолчанию, но можно выбрать 'cp1251' или другую).
+    '''
+    p = Path(path) 
+    return p.read_text(encoding=encoding)
+
+
+import csv
+from pathlib import Path
+from typing import Iterable, Sequence
+
+def write_csv(rows: Iterable[Sequence], path: str | Path,
+    header: tuple[str, ...] | None = None) -> None:
+    p = Path(path)
+    rows = list(rows)
+    if rows:
+        len_rows = len(rows[0])
+        for element in rows:
+            if len_rows != len(element):
+                raise ValueError("Все строки должны быть одинаковой длины")
+
+    with p.open("w", newline="", encoding="utf-8") as f:
+        w = csv.writer(f)
+        if header is not None:
+            w.writerow(header)
+        for r in rows:
+            w.writerow(r)
+```
+![01](/images/lab04/01.png)
+
+## Задание 2
+```python
+from src.lab04.io_txt_csv import read_text, write_csv
+from lib.text import normalize, tokenize, count_freq, top_n
+import sys
+
+def main(input_path: str = 'data/input.txt', output_path: str = 'data/report.csv', encoding: str = 'utf-8'):
+    try:
+        text = read_text(input_path, encoding=encoding)
+    except FileNotFoundError:
+        print('файл не найден')
+        sys.exit(1)
+    except UnicodeDecodeError:
+        print('неправильная кодировка')
+        sys.exit(1)
+    '''
+sys.exit(1) интерпретатор сразу завершает работу 
+Значение аргумента (1):
+Код возврата 1 означает, что программа завершилась с ошибкой.
+Код возврата 0 означет успешное завершение программы.
+    '''
+    freq = count_freq(tokenize(normalize(text)))
+    sorted_freq= top_n(freq)
+    rows = sorted_freq
+    header = ("word", "count")
+    if rows:
+        write_csv(rows, output_path, header=header)
+    else:
+        write_csv([], output_path, header=header)
+
+    total_words = sum(freq.values())
+    unique_words = len(freq)
+    top_5 = sorted_freq[:5]
+
+    print(f"Всего слов: {total_words}")
+    print(f"Уникальных слов: {unique_words}")
+    print("Топ-5 слов:")
+    for word, count in top_5:
+        print(f"{word}: {count}")
+
+if __name__ == "__main__":
+    main()
+```
+![02](/images/lab04/02_1.png)
+![03](/images/lab04/02_2.png)
