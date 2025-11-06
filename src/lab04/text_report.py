@@ -1,5 +1,5 @@
-from src.lab04.io_txt_csv import read_text, write_csv
-from lib.text import normalize, tokenize, count_freq, top_n
+from io_txt_csv import read_text, write_csv
+from src.lib.tеxt import normalize, tokenize, count_freq, top_n
 import sys
 
 def main(input_path: str = 'data/input.txt', output_path: str = 'data/report.csv', encoding: str = 'utf-8'):
