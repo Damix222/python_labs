@@ -505,4 +505,4 @@ csv_to_xlsx('data/lab05/samples/people.csv', 'data/lab05/out/people.xlsx')
 ```
 
 ### Результат
-![05](/images/lab04/05.png)
+![05](/images/lab05/05.png)
