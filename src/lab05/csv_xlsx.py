@@ -27,10 +27,7 @@ def csv_to_xlsx(csv_path: str, xlsx_path: str) -> None:
 
     for col_index in range(1, len(rows[0]) + 1):
         col_letter = get_column_letter(col_index)
-        max_length = max(
-            (len(str(sheet.cell(row=row, column=col_index).value or "")) for row in range(1, len(rows) + 1)),
-            default=8
-        )
+        max_length = max((len(str(sheet.cell(row=row, column=col_index).value or "")) for row in range(1, len(rows) + 1)), default=8)
         sheet.column_dimensions[col_letter].width = max(max_length, 8)
 
     book.save(xlsx_path)
