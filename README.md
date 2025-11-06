@@ -491,19 +491,18 @@ def csv_to_xlsx(csv_path: str, xlsx_path: str) -> None:
         for col_index, value in enumerate(row, start=1):
             sheet.cell(row=row_index, column=col_index, value=value)
 
-    for col_index in range(1, len(rows[0]) + 1):
-        col_letter = get_column_letter(col_index)
+    for column_index in range(1, len(rows[0]) + 1):
+        column_letter = get_column_letter(column_index)
         max_length = max(
             (len(str(sheet.cell(row=row, column=col_index).value or "")) for row in range(1, len(rows) + 1)),
             default=8
         )
-        sheet.column_dimensions[col_letter].width = max(max_length, 8)
+        sheet.column_size[col_letter].width = max(max_length, 8)
 
     book.save(xlsx_path)
 
 csv_to_xlsx('data/lab05/samples/people.csv', 'data/lab05/out/people.xlsx')  
 ```
-### CSV
-![05](/images/lab04/05.png)
+
 ### Результат
-![06](/images/lab04/06.png)
+![05](/images/lab04/05.png)

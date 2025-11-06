@@ -1,3 +1,5 @@
-name,age,city
-Alice,22,SPB
-Bob,25,Moscow
+name,age,city,profession
+Alice,22,SPB,teacher
+Bob,25,Moscow,policeman
+Peter,19,Ryazan,programmer
+Liza,23,Kazan,doctor

@@ -1,10 +1,22 @@
 [
     {
         "name": "Alice",
-        "age": 22
+        "age": 24,
+        "hobby": "sewing"
      }, 
      {
-        "name": "Bob", 
-        "age": 25
-    }
+        "name": "Peter",
+        "age": 24,
+        "hobby": "sport"
+     }, 
+     {
+        "name": "Dima",
+        "age": 24,
+        "hobby": "coocking"
+     }, 
+     {
+        "name": "Misha",
+        "age": 24,
+        "hobby": "gaming"
+     }
 ]
