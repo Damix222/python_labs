@@ -652,4 +652,4 @@ if __name__ == "__main__":
 #### CSV в XLSX
 ![04](/images/lab06/04.png)
 #### --HELP
-![05](/images/lab05/05.png)
+![05](/images/lab06/05.png)
