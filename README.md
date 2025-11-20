@@ -504,3 +504,152 @@ csv_to_xlsx('data/lab05/samples/people.csv', 'data/lab05/out/people.xlsx')
 
 ### Результат
 ![05](/images/lab05/05.png)
+
+
+
+# Лабораторнгая работа 6
+
+## Задание 1
+```python
+import argparse
+import sys
+from pathlib import Path
+from lib.text import normalize, tokenize, count_freq, top_n
+
+def read_file_lines(filepath):
+    path = Path(filepath)
+    if not path.exists():
+        raise FileNotFoundError('Файл не найден') 
+    if not path.is_file():
+        raise ValueError('не является файлом')
+    try:
+        with path.open(encoding='utf-8') as f:
+            return f.readlines()
+    except UnicodeDecodeError:
+        raise ValueError(f'Невозможно прочитать файл (кодировка не UTF-8)')
+
+def cat_command(input_file, number_lines):
+    try:
+        lines = read_file_lines(input_file)
+        for i, line in enumerate(lines, start=1):
+            if number_lines:
+                print(f"{i}\t{line.rstrip()}")
+            else:
+                print(line.rstrip())
+    except (FileNotFoundError, ValueError) as e:
+        print(f"Ошибка: {e}", file=sys.stderr)
+        sys.exit(1)
+
+def stats_command(input_file, top_count):
+    if top_count <= 0:
+        print("top_count должен быть положительным числом", file=sys.stderr)
+        sys.exit(1)
+    try:
+        lines = read_file_lines(input_file)
+    except (FileNotFoundError, ValueError) as e:
+        print(e, file=sys.stderr)
+        sys.exit(1)
+
+    text = ' '.join(lines)
+    normalized_text = normalize(text)
+    tokens = tokenize(normalized_text)
+    freq = count_freq(tokens)
+    most_common = top_n(freq, n=top_count)
+    print(f"Top {top_n} words:")
+    for word, count in most_common:
+        print(f"{word}: {count}")
+
+
+def main():
+    parser = argparse.ArgumentParser(description="CLI утилиты для обработки текста")
+    subparsers = parser.add_subparsers(dest='command', required=True)
+
+    cat_parser = subparsers.add_parser('cat', help='Вывести содержимое файла')
+    cat_parser.add_argument('--input', required=True, help='Входной файл')
+    cat_parser.add_argument('-n', action='store_true', help='Нумеровать строки')
+
+    stats_parser = subparsers.add_parser('stats', help='Частоты слов в тексте')
+    stats_parser.add_argument('--input', required=True, help='Входной текстовый файл')
+    stats_parser.add_argument('--top', type=int, default=5, help='Сколько показать топ слов (по умолчанию 5)')
+
+    args = parser.parse_args()
+
+    if args.command == 'cat':
+        cat_command(args.input, args.n)
+    elif args.command == 'stats':
+        stats_command(args.input, args.top)
+    else:
+        parser.print_help()
+    
+if __name__ == "__main__":
+    main() 
+```
+#### --Help
+![01](/images/lab06/01.png)
+#### ТОп слова 
+![02](/images/lab06/02.png)
+
+
+## Задание 2
+```python
+import argparse
+import sys
+from pathlib import Path
+from src.lab05.json_csv import json_to_csv, csv_to_json
+from src.lab05.csv_xlsx import csv_to_xlsx
+
+def file_exists_or_exit(filepath):
+    path = Path(filepath)
+    if not path.exists():
+        print('файл не найден', file=sys.stderr)
+        sys.exit(1)
+    if not path.is_file():
+        print(f'не является файлом', file=sys.stderr)
+        sys.exit(1)
+
+
+def main():
+    parser = argparse.ArgumentParser(description="Конвертеры данных: JSON, CSV, XLSX")
+    subparsers = parser.add_subparsers(dest='cmd')
+
+    p1 = subparsers.add_parser('json2csv', help='Конвертировать JSON в CSV')
+    p1.add_argument('--in', dest='input', required=True, help='Входной JSON файл')
+    p1.add_argument('--out', dest='output', required=True, help='Выходной CSV файл')
+
+    p2 = subparsers.add_parser('csv2json', help='Конвертировать CSV в JSON')
+    p2.add_argument('--in', dest='input', required=True, help='Входной CSV файл')
+    p2.add_argument('--out', dest='output', required=True, help='Выходной JSON файл')
+
+    p3 = subparsers.add_parser('csv2xlsx', help='Конвертировать CSV в XLSX')
+    p3.add_argument('--in', dest='input', required=True, help='Входной CSV файл')
+    p3.add_argument('--out', dest='output', required=True, help='Выходной XLSX файл')
+
+    args = parser.parse_args()
+
+    try:
+        if args.cmd == 'json2csv':
+            json_to_csv(args.input, args.output)
+            print(f'конвертация JSON в CSV выполнена: {args.output}')
+        elif args.cmd == 'csv2json':
+            csv_to_json(args.input, args.output)
+            print(f'конвертация CSV в JSON выполнена:  {args.output}')
+        elif args.cmd == 'csv2xlsx':
+            csv_to_xlsx(args.input, args.output)
+            print(f'конвертация CSV в XLSX выполнена: : {args.output}')
+        else:
+            parser.print_help()
+            sys.exit(1)
+    except Exception as e:
+        print('ошибка конвертации файла', file=sys.stderr)
+        sys.exit(1)
+
+if __name__ == "__main__":
+    main()
+```
+
+#### JSON в CSV
+![03](/images/lab06/03.png)
+#### CSV в XLSX
+![04](/images/lab06/04.png)
+#### --HELP
+![05](/images/lab05/05.png)
