@@ -526,7 +526,7 @@ def read_file_lines(filepath):
         with path.open(encoding='utf-8') as f:
             return f.readlines()
     except UnicodeDecodeError:
-        raise ValueError(f'Невозможно прочитать файл (кодировка не UTF-8)')
+        raise ValueError('Невозможно прочитать файл (кодировка не UTF-8)')
 
 def cat_command(input_file, number_lines):
     try:
