@@ -1,7 +1,10 @@
+dependencies = [
+  "requests>=2.32",
+  "pandas>=2.2"
+]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 python_files = ["test_*.py"]
 python_classes = ["Test*"]
 python_functions = ["test_*"]
-# Уберите addopts или оставьте только --verbose
 addopts = ["--verbose"]
