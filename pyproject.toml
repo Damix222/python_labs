@@ -1,4 +1,7 @@
 [tool.pytest.ini_options]
-addopts = "-v --cov=src --cov-report=term-missing"
 testpaths = ["tests"]
-
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+# Уберите addopts или оставьте только --verbose
+addopts = ["--verbose"]
