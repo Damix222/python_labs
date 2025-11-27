@@ -1,7 +1,4 @@
-[tool.black]
-line-length = 88
-target-version = ["py310"]
-
 [tool.pytest.ini_options]
 addopts = "-v --cov=src --cov-report=term-missing"
 testpaths = ["tests"]
+
