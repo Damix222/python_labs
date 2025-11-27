@@ -1,10 +1,11 @@
 import sys
 from pathlib import Path
 
-lib_path = Path(__file__).parent.parent / 'lib'
+lib_path = Path(__file__).parent.parent / "lib"
 sys.path.insert(0, str(lib_path))
 
 from text import normalize, tokenize, count_freq, top_n
+
 
 def main():
     text = sys.stdin.readline()
@@ -18,6 +19,7 @@ def main():
     print("Топ-5:")
     for word, count in top_words:
         print(f"{word}:{count}")
+
 
 if __name__ == "__main__":
     main()

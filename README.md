@@ -1,5 +1,166 @@
 # laboratoriti
 
+# Лабораторнгая работа 6
+
+## Задание 1
+```python
+import pytest
+from src.lib.text import normalize, tokenize, count_freq, top_n
+
+
+@pytest.mark.parametrize(
+    "source, expected",
+    [
+        ("ПрИвЕт\nМИр\t", "привет мир"),
+        ("ёжик, Ёлка", "ежик, елка"),
+        ("Hello\r\nWorld", "hello world"),
+        ("  двойные   пробелы  ", "двойные пробелы"),
+        ("ТЕСТ123!!!", "тест123!!!"),
+        ("", ""),
+        ("   ", ""),
+        ("\n\t\r", ""),
+    ],
+)
+def test_normalize_basic(source, expected):
+    assert normalize(source) == expected
+
+
+@pytest.mark.parametrize(
+    "sourse, expected",
+    [
+        ("привет мир", ["привет", "мир"]),
+        ("hello world test", ["hello", "world", "test"]),
+        ("один, два. три!", ["один", "два", "три"]),
+        ("", []),
+        ("   ", []),
+        ("word", ["word"]),
+        ("много    пробелов", ["много", "пробелов"]),
+    ],
+)
+def test_tokenize_basic(sourse, expected):
+    assert tokenize(sourse) == expected
+
+
+def test_count_freq_and_top_n_basic():
+    tokens = ["яблоко", "банан", "яблоко", "яблоко", "банан", "яблоко"]
+    expected = {"яблоко": 4, "банан": 2}
+    assert count_freq(tokens) == expected
+
+    top = top_n(count_freq(tokens), 1)
+    assert top == [("яблоко", 4)]
+
+
+def test_count_freq_empty():
+    assert count_freq([]) == {}
+
+
+def test_top_n_large():
+    freq = {"яблоко": 2, "бананы": 1}
+    expected = [("яблоко", 2), ("бананы", 1)]
+    assert top_n(freq, 10) == expected
+
+
+def test_top_n_zero():
+    freq = {"ялоко": 2, "бананы": 1}
+    assert top_n(freq, 0) == []
+
+
+@pytest.mark.parametrize(
+    "freq, n, expected",
+    [
+        ({"яблоко": 3, "банан": 3, "апельсин": 1}, 2, [("банан", 3), ("яблоко", 3)]),
+    ],
+)
+def test_top_n_tie_breaker(freq, n, expected):
+    result = top_n(freq, n)
+    assert result == expected
+```
+
+## Задание 2
+```python
+import pytest
+import json
+import csv
+from pathlib import Path
+from src.lab05.json_csv import json_to_csv, csv_to_json
+
+
+def test_json_to_csv_roundtrip(tmp_path: Path):
+    src = tmp_path / "people.json"
+    dst = tmp_path / "people.csv"
+
+    data = [
+        {"name": "Alice", "age": 22},
+        {"name": "Bob", "age": 25},
+    ]
+
+    src.write_text(json.dumps(data, ensure_ascii=False), encoding="utf-8")
+    json_to_csv(str(src), str(dst))
+
+    with dst.open(encoding="utf-8") as f:
+        rows = list(csv.DictReader(f))
+
+    assert len(rows) == 2
+    assert {"name", "age"} == set(rows[0].keys())
+
+
+def test_csv_to_json_roundtrip(tmp_path: Path):
+    src = tmp_path / "data.csv"
+    dst = tmp_path / "data.json"
+
+    with src.open("w", encoding="utf-8", newline="") as f:
+        writer = csv.DictWriter(f, fieldnames=["name", "age"])
+        writer.writeheader()
+        writer.writerow({"name": "Alice", "age": "22"})
+        writer.writerow({"name": "Bob", "age": "25"})
+
+    csv_to_json(str(src), str(dst))
+
+    data = json.loads(dst.read_text(encoding="utf-8"))
+    assert len(data) == 2
+    assert {"name", "age"} == set(data[0].keys())
+
+
+def test_json_to_csv_incorrect_json(tmp_path: Path):
+    src = tmp_path / "bad.json"
+    dst = tmp_path / "out.csv"
+
+    src.write_text("not valid json", encoding="utf-8")
+
+    with pytest.raises(ValueError):
+        json_to_csv(str(src), str(dst))
+
+
+def test_csv_to_json_incorrect_csv(tmp_path: Path):
+    src = tmp_path / "bad.csv"
+    dst = tmp_path / "out.json"
+
+    src.write_text("name;age;badformat...", encoding="utf-8")
+
+    with pytest.raises(ValueError):
+        csv_to_json(str(src), str(dst))
+
+
+def test_json_to_csv_file_not_found():
+    with pytest.raises(FileNotFoundError):
+        json_to_csv("no/such/file.json", "out.csv")
+
+
+def test_csv_to_json_file_not_found():
+    with pytest.raises(FileNotFoundError):
+        csv_to_json("no/such/file.csv", "out.json")
+```
+
+#### Запуск автотестов  
+![01](/images/lab07/01.png)
+#### 
+![02](/images/lab07/02.png)
+#### Стиль кода (black)
+![03](/images/lab07/03.png)
+![04](/images/lab07/04.png)
+![05](/images/lab07/05.png)
+
+
 # Лабораторнгая работа 1
 
 ## Задание 1
