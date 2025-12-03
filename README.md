@@ -1,5 +1,94 @@
 # laboratoriti
 
+# Лабораторнгая работа 8
+
+## Задание 1
+```python
+from datetime import datetime, date
+from dataclasses import dataclass
+
+@dataclass
+class Student:
+    fio: str
+    birthdate: str
+    group: str
+    gpa: float
+
+    def __post_init__(self):
+        try:
+            datetime.strptime(self.birthdate, "%Y-%m-%d")
+        except ValueError:
+            raise ValueError("warning: birthdate format is invalid")
+        
+        if not (0 <= self.gpa <= 5):
+            raise ValueError("gpa must be between 0 and 5")
+    
+    def age(self) -> int:
+        b = datetime.strptime(self.birthdate, "%Y-%m-%d").date()
+        today = date.today()
+        years = today.year - b.year
+        if (today.month, today.day) < (b.month, b.day):
+            years -= 1
+        return years
+    
+    def to_dict(self) -> dict:
+        return {
+            "fio": self.fio,
+            "birthdate": self.birthdate,
+            "group": self.group,
+            "gpa": self.gpa
+        }
+    
+    @classmethod
+    def from_dict(cls, d: dict):
+        return cls(
+            fio=d["fio"],
+            birthdate=d["birthdate"],
+            group=d["group"],
+            gpa=float(d["gpa"]),
+        )
+
+    def __str__(self) -> str:
+        return f"{self.fio}, age: {self.age()}, group: {self.group}, gpa: {self.gpa}"
+```
+
+## Задание 2
+```python
+import json
+from pathlib import Path
+from .models import Student
+
+def students_to_json(students: list[Student], path: str):
+    path = Path(path)
+    data = [s.to_dict() for s in students]
+    
+    with open(path, 'w', encoding='utf-8') as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
+    
+
+
+def students_from_json(path: str) -> list[Student]:
+    path = Path(path)
+    data = json.loads(path.read_text(encoding="utf-8"))
+
+    if not isinstance(data, list):
+        raise ValueError("JSON должен содержать массив студентов")
+
+    students = []
+    for item in data:
+        students.append(Student.from_dict(item))
+
+    return students
+```
+
+#### Рузульатат
+![01](/images/lab08/01.png)
+#### 
+![02](/images/lab08/02.png)
+####
+![03](/images/lab08/03.png)
+
+
 # Лабораторнгая работа 7
 
 ## Задание 1
