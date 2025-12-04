@@ -16,6 +16,9 @@ class Student:
         
         if not (0 <= self.gpa <= 5):
             raise ValueError("gpa must be between 0 and 5")
+        
+        if len(self.fio.strip().split()) < 2:
+            raise ValueError("ФИО должно содержать минимум 2 слова")
     
     def age(self) -> int:
         b = datetime.strptime(self.birthdate, "%Y-%m-%d").date()
